@@ -1,0 +1,64 @@
+-- Tạo database
+CREATE DATABASE IF NOT EXISTS university_management;
+USE university_management;
+
+-- Bảng SinhVien
+CREATE TABLE SinhVien (
+    MaSV VARCHAR(20) PRIMARY KEY,
+    HoTen VARCHAR(100) NOT NULL,
+    NgaySinh DATE NOT NULL,
+    GioiTinh ENUM('Nam', 'Nữ') NOT NULL,
+    SDT VARCHAR(15),
+    DiaChi VARCHAR(200),
+    MaLop VARCHAR(20),
+    password VARCHAR(255) NOT NULL
+);
+
+-- Bảng GiangVien
+CREATE TABLE GiangVien (
+    MaGV VARCHAR(20) PRIMARY KEY,
+    HoTen VARCHAR(100) NOT NULL,
+    NgaySinh DATE NOT NULL,
+    SDT VARCHAR(15),
+    MaHK VARCHAR(20),
+    password VARCHAR(255) NOT NULL
+);
+
+-- Bảng MonHoc
+CREATE TABLE MonHoc (
+    MaMH VARCHAR(20) PRIMARY KEY,
+    TenMH VARCHAR(100) NOT NULL,
+    SoTinChi INT NOT NULL
+);
+
+-- Bảng HocKy
+CREATE TABLE HocKy (
+    MaHK VARCHAR(20) PRIMARY KEY,
+    TenHK VARCHAR(100) NOT NULL,
+    NamHoc VARCHAR(20) NOT NULL
+);
+
+-- Bảng LopHocPhan
+CREATE TABLE LopHocPhan (
+    MaLHP VARCHAR(20) PRIMARY KEY,
+    MaMH VARCHAR(20),
+    MaGV VARCHAR(20),
+    MaHK VARCHAR(20),
+    SiSo INT DEFAULT 0,
+    FOREIGN KEY (MaMH) REFERENCES MonHoc(MaMH),
+    FOREIGN KEY (MaGV) REFERENCES GiangVien(MaGV),
+    FOREIGN KEY (MaHK) REFERENCES HocKy(MaHK)
+);
+
+-- Bảng KetQua (COMPOSITE KEY)
+CREATE TABLE KetQua (
+    MaSV VARCHAR(20),
+    MaLHP VARCHAR(20),
+    DiemChuyenCan FLOAT DEFAULT 0,
+    DiemGiuaKy FLOAT DEFAULT 0,
+    DiemCuoiKy FLOAT DEFAULT 0,
+    DiemTongKet FLOAT DEFAULT 0,
+    PRIMARY KEY (MaSV, MaLHP),
+    FOREIGN KEY (MaSV) REFERENCES SinhVien(MaSV),
+    FOREIGN KEY (MaLHP) REFERENCES LopHocPhan(MaLHP)
+);
