@@ -25,9 +25,9 @@ class GiangVien {
         return $stmt->execute([
             $data['MaGV'],
             $data['HoTen'],
-            $data['NgaySinh'],
-            $data['SDT'],
-            $data['MaHK'],
+            $data['NgaySinh'] ?? '1990-01-01',
+            $data['SDT'] ?? '',
+            $data['MaHK'] ?? 'HK1',
             password_hash($data['password'] ?? '123456', PASSWORD_DEFAULT)
         ]);
     }
@@ -41,8 +41,13 @@ class GiangVien {
         $stmt = $this->db->prepare("SELECT * FROM GiangVien WHERE MaGV = ?");
         $stmt->execute([$maGV]);
         $user = $stmt->fetch();
-        
-        if ($user && password_verify($password, $user['password'])) {
+
+        if (!$user) {
+            return false;
+        }
+
+        $storedPassword = $user['password'] ?? '';
+        if (password_verify($password, $storedPassword) || $storedPassword === $password) {
             return $user;
         }
         return false;

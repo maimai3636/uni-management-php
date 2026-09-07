@@ -57,8 +57,13 @@ class SinhVien {
         $stmt = $this->db->prepare("SELECT * FROM SinhVien WHERE MaSV = ?");
         $stmt->execute([$maSV]);
         $user = $stmt->fetch();
-        
-        if ($user && password_verify($password, $user['password'])) {
+
+        if (!$user) {
+            return false;
+        }
+
+        $storedPassword = $user['password'] ?? '';
+        if (password_verify($password, $storedPassword) || $storedPassword === $password) {
             return $user;
         }
         return false;

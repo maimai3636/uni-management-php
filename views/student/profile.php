@@ -1,6 +1,5 @@
 <h4><i class="fas fa-id-card"></i> Thông tin cá nhân</h4>
 <hr>
-
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card shadow-sm">
@@ -37,16 +36,3 @@
                     <div class="col-sm-8"><?= htmlspecialchars($sinhVien['SDT'] ?? 'Chưa cập nhật') ?></div>
                 </div>
                 <hr>
-                <div class="row mb-3">
-                    <div class="col-sm-4 text-muted"><i class="fas fa-map-marker-alt"></i> Địa chỉ:</div>
-                    <div class="col-sm-8"><?= htmlspecialchars($sinhVien['DiaChi'] ?? 'Chưa cập nhật') ?></div>
-                </div>
-                <hr>
-                <div class="row mb-3">
-                    <div class="col-sm-4 text-muted"><i class="fas fa-users-class"></i> Lớp sinh hoạt:</div>
-                    <div class="col-sm-8"><span class="badge bg-secondary"><?= htmlspecialchars($sinhVien['MaLop'] ?? '') ?></span></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

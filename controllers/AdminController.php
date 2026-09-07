@@ -101,9 +101,9 @@ class AdminController {
         $data = [
             'MaGV' => $_POST['MaGV'],
             'HoTen' => $_POST['HoTen'],
-            'NgaySinh' => $_POST['NgaySinh'],
+            'NgaySinh' => $_POST['NgaySinh'] ?? '1990-01-01',
             'SDT' => $_POST['SDT'] ?? '',
-            'MaHK' => $_POST['MaHK'],
+            'MaHK' => $_POST['MaHK'] ?? 'HK1',
             'password' => $_POST['password'] ?? '123456'
         ];
         

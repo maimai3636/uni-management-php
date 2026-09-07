@@ -2,7 +2,6 @@
     <h4><i class="fas fa-school"></i> Danh sách lớp học phần phụ trách</h4>
 </div>
 <hr>
-
 <div class="table-responsive">
     <table class="table table-hover align-middle">
         <thead class="table-light">

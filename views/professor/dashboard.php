@@ -6,7 +6,6 @@
         </div>
     </div>
 </div>
-
 <div class="row mb-4">
     <div class="col-md-6 mb-3">
         <div class="card bg-primary text-white">
@@ -27,7 +26,6 @@
         </div>
     </div>
 </div>
-
 <div class="card">
     <div class="card-header bg-white">
         <h5 class="mb-0"><i class="fas fa-layer-group"></i> Các lớp học phần đang giảng dạy</h5>
@@ -42,31 +40,3 @@
                         <th>Số tín chỉ</th>
                         <th>Học kỳ</th>
                         <th>Sĩ số</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($lopHocPhanList as $lhp): ?>
-                    <tr>
-                        <td><strong><?= htmlspecialchars($lhp['MaLHP']) ?></strong></td>
-                        <td><?= htmlspecialchars($lhp['monHoc']['TenMH'] ?? 'N/A') ?></td>
-                        <td><?= htmlspecialchars($lhp['monHoc']['SoTinChi'] ?? '0') ?></td>
-                        <td><?= htmlspecialchars($lhp['hocKy']['TenHK'] ?? '') ?> (<?= htmlspecialchars($lhp['hocKy']['NamHoc'] ?? '') ?>)</td>
-                        <td><span class="badge bg-secondary"><?= htmlspecialchars($lhp['SiSo'] ?? 0) ?></span></td>
-                        <td>
-                            <a href="<?= url('/professor/students/' . $lhp['MaLHP']) ?>" class="btn btn-primary btn-sm">
-                                <i class="fas fa-users"></i> Danh sách SV & Điểm
-                            </a>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                    <?php if (empty($lopHocPhanList)): ?>
-                    <tr>
-                        <td colspan="6" class="text-center py-3 text-muted">Chưa có lớp học phần nào được phân công</td>
-                    </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>

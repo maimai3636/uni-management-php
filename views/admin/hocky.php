@@ -5,21 +5,18 @@
     </button>
 </div>
 <hr>
-
 <?php if (isset($success)): ?>
 <div class="alert alert-success alert-dismissible fade show">
     <?= htmlspecialchars($success) ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 <?php endif; ?>
-
 <?php if (isset($error)): ?>
 <div class="alert alert-danger alert-dismissible fade show">
     <?= htmlspecialchars($error) ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 <?php endif; ?>
-
 <div class="table-responsive">
     <table class="table table-hover align-middle">
         <thead class="table-light">
@@ -50,36 +47,4 @@
             <?php endif; ?>
         </tbody>
     </table>
-</div>
-
-<!-- Modal thêm học kỳ -->
-<div class="modal fade" id="addModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><i class="fas fa-plus-circle"></i> Thêm học kỳ</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form action="<?= url('/admin/hocky/add') ?>" method="POST">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Mã học kỳ <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="MaHK" placeholder="VD: HK4" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tên học kỳ <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="TenHK" placeholder="VD: Học kỳ 1" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Năm học <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="NamHoc" placeholder="VD: 2024-2025" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Lưu thông tin</button>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
