@@ -2,18 +2,83 @@
 // seed/importData.php
 require_once __DIR__ . '/../config/database.php';
 
+try {
+    $pdo->exec("CREATE DATABASE IF NOT EXISTS university_management");
+    $pdo->exec("USE university_management");
+} catch (Exception $e) {
+    // bỏ qua nếu đã dùng database đúng
+}
+
 echo "✅ Connected to MySQL\n";
 
-// Xóa dữ liệu cũ
-$pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
-$pdo->exec("TRUNCATE TABLE SinhVien");
-$pdo->exec("TRUNCATE TABLE GiangVien");
-$pdo->exec("TRUNCATE TABLE MonHoc");
-$pdo->exec("TRUNCATE TABLE HocKy");
-$pdo->exec("TRUNCATE TABLE LopHocPhan");
-$pdo->exec("TRUNCATE TABLE KetQua");
-$pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
+// Xóa dữ liệu cũ nếu bảng tồn tại
+$tables = ['KetQua', 'LopHocPhan', 'SinhVien', 'GiangVien', 'MonHoc', 'HocKy'];
+foreach ($tables as $table) {
+    try {
+        $pdo->exec("TRUNCATE TABLE `{$table}`");
+    } catch (Exception $e) {
+        // Bỏ qua nếu bảng chưa tồn tại
+    }
+}
+
 echo "🗑️ Cleared old data\n";
+
+// Tạo lại bảng nếu chưa tồn tại
+$pdo->exec("CREATE TABLE IF NOT EXISTS HocKy (
+    MaHK VARCHAR(20) PRIMARY KEY,
+    TenHK VARCHAR(100) NOT NULL,
+    NamHoc VARCHAR(20) NOT NULL
+)");
+
+$pdo->exec("CREATE TABLE IF NOT EXISTS MonHoc (
+    MaMH VARCHAR(20) PRIMARY KEY,
+    TenMH VARCHAR(100) NOT NULL,
+    SoTinChi INT NOT NULL
+)");
+
+$pdo->exec("CREATE TABLE IF NOT EXISTS GiangVien (
+    MaGV VARCHAR(20) PRIMARY KEY,
+    HoTen VARCHAR(100) NOT NULL,
+    NgaySinh DATE NOT NULL,
+    SDT VARCHAR(15),
+    MaHK VARCHAR(20),
+    password VARCHAR(255) NOT NULL,
+    FOREIGN KEY (MaHK) REFERENCES HocKy(MaHK)
+)");
+
+$pdo->exec("CREATE TABLE IF NOT EXISTS SinhVien (
+    MaSV VARCHAR(20) PRIMARY KEY,
+    HoTen VARCHAR(100) NOT NULL,
+    NgaySinh DATE NOT NULL,
+    GioiTinh ENUM('Nam', 'Nữ') NOT NULL,
+    SDT VARCHAR(15),
+    DiaChi VARCHAR(200),
+    MaLop VARCHAR(20),
+    password VARCHAR(255) NOT NULL
+)");
+
+$pdo->exec("CREATE TABLE IF NOT EXISTS LopHocPhan (
+    MaLHP VARCHAR(20) PRIMARY KEY,
+    MaMH VARCHAR(20),
+    MaGV VARCHAR(20),
+    MaHK VARCHAR(20),
+    SiSo INT DEFAULT 0,
+    FOREIGN KEY (MaMH) REFERENCES MonHoc(MaMH),
+    FOREIGN KEY (MaGV) REFERENCES GiangVien(MaGV),
+    FOREIGN KEY (MaHK) REFERENCES HocKy(MaHK)
+)");
+
+$pdo->exec("CREATE TABLE IF NOT EXISTS KetQua (
+    MaSV VARCHAR(20),
+    MaLHP VARCHAR(20),
+    DiemChuyenCan FLOAT DEFAULT 0,
+    DiemGiuaKy FLOAT DEFAULT 0,
+    DiemCuoiKy FLOAT DEFAULT 0,
+    DiemTongKet FLOAT DEFAULT 0,
+    PRIMARY KEY (MaSV, MaLHP),
+    FOREIGN KEY (MaSV) REFERENCES SinhVien(MaSV),
+    FOREIGN KEY (MaLHP) REFERENCES LopHocPhan(MaLHP)
+)");
 
 // Học Kỳ
 $hocKyList = [

@@ -15,17 +15,35 @@ if (!defined('BASE_URL')) {
     define('BASE_URL', rtrim($base, '/'));
 }
 
-$host = 'localhost';
-$dbname = 'university_management';
-$username = 'root';
-$password = '';
+$host = getenv('DB_HOST') ?: '127.0.0.1';
+$port = getenv('DB_PORT') ?: '3306';
+$dbname = getenv('DB_NAME') ?: 'university_management';
+$username = getenv('DB_USERNAME') ?: 'root';
+$password = getenv('DB_PASSWORD') ?: '';
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    die("Kết nối database thất bại: " . $e->getMessage());
+$dsnCandidates = [
+    "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4",
+    "mysql:host=localhost;port=3306;dbname={$dbname};charset=utf8mb4",
+    "mysql:host=127.0.0.1;port=3306;dbname={$dbname};charset=utf8mb4",
+    "mysql:host=localhost;port=3307;dbname={$dbname};charset=utf8mb4",
+    "mysql:host=127.0.0.1;port=3307;dbname={$dbname};charset=utf8mb4",
+];
+
+$pdo = null;
+foreach ($dsnCandidates as $dsn) {
+    try {
+        $pdo = new PDO($dsn, $username, $password, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]);
+        break;
+    } catch (PDOException $e) {
+        $lastError = $e->getMessage();
+    }
+}
+
+if (!$pdo) {
+    die("Kết nối database thất bại: " . ($lastError ?? 'Không thể kết nối MySQL'));
 }
 
 // Helper để tạo URL chuẩn
