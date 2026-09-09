@@ -47,7 +47,7 @@
         </tbody>
     </table>
 </div>
-<!-- Modal thêm giảng viên -->
+
 <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
