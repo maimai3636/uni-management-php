@@ -45,6 +45,46 @@
                 <td colspan="4" class="text-center py-3 text-muted">Chưa có dữ liệu học kỳ</td>
             </tr>
             <?php endif; ?>
+<!-- Modal thêm học kỳ -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="<?= url('/admin/hocky/add') ?>">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm học kỳ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Mã học kỳ</label>
+                        <input type="text" name="MaHK" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tên học kỳ</label>
+                        <input type="text" name="TenHK" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Năm học</label>
+                        <input type="text" name="NamHoc" class="form-control"
+                               placeholder="VD: 2026-2027" required>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Hủy
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Thêm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
         </tbody>
     </table>
 </div>
