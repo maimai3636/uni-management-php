@@ -25,7 +25,6 @@
                 <th>Họ và tên</th>
                 <th>Ngày sinh</th>
                 <th>Số điện thoại</th>
-                <th>Mã học kỳ</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
@@ -36,7 +35,6 @@
                 <td><?= htmlspecialchars($gv['HoTen']) ?></td>
                 <td><?= formatDate($gv['NgaySinh']) ?></td>
                 <td><?= htmlspecialchars($gv['SDT'] ?? '') ?></td>
-                <td><span class="badge bg-secondary"><?= htmlspecialchars($gv['MaHK'] ?? '') ?></span></td>
                 <td>
                     <a href="<?= url('/admin/giangvien/delete/' . $gv['MaGV']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Xóa giảng viên này?')">
  <i class="fas fa-trash"></i>
@@ -76,17 +74,6 @@
                     <div class="mb-3">
                         <label class="form-label">Số điện thoại</label>
                         <input type="text" name="SDT" class="form-control">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Học kỳ</label>
-                        <select name="MaHK" class="form-select">
-                            <?php foreach ($hocKyList as $hk): ?>
-                                <option value="<?= htmlspecialchars($hk['MaHK']) ?>">
-                                    <?= htmlspecialchars($hk['MaHK']) ?> - <?= htmlspecialchars($hk['TenHK']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
                     </div>
 
                     <div class="mb-3">
