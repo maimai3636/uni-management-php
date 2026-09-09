@@ -39,3 +39,11 @@
                 <td><span class="badge bg-secondary"><?= htmlspecialchars($gv['MaHK'] ?? '') ?></span></td>
                 <td>
                     <a href="<?= url('/admin/giangvien/delete/' . $gv['MaGV']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Xóa giảng viên này?')">
+ <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
