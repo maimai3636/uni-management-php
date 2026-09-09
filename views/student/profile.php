@@ -25,9 +25,12 @@
                 <div class="row mb-3">
                     <div class="col-sm-4 text-muted"><i class="fas fa-venus-mars"></i> Giới tính:</div>
                     <div class="col-sm-8">
-                        <span class="badge <?= ($sinhVien['GioiTinh'] ?? '') === 'Nam' ? 'bg-primary' : 'bg-danger' ?>">
-                            <?= htmlspecialchars($sinhVien['GioiTinh'] ?? '') ?>
-                        </span>
+                        <span class="badge 
+    <?= ($sinhVien['GioiTinh'] ?? '') === 'Nam' 
+        ? 'bg-primary' 
+        : (($sinhVien['GioiTinh'] ?? '') === 'Nữ' ? 'bg-danger' : 'bg-secondary') ?>">
+    <?= htmlspecialchars($sinhVien['GioiTinh'] ?? '') ?>
+</span>
                     </div>
                 </div>
                 <hr>
