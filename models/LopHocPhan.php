@@ -8,9 +8,16 @@ class LopHocPhan {
     }
     
     public function getAll() {
-        $stmt = $this->db->query("SELECT * FROM LopHocPhan ORDER BY MaLHP");
-        return $stmt->fetchAll();
-    }
+    $stmt = $this->db->query("
+        SELECT 
+            lhp.*,
+            gv.HoTen AS TenGV
+        FROM LopHocPhan lhp
+        LEFT JOIN GiangVien gv ON lhp.MaGV = gv.MaGV
+        ORDER BY lhp.MaLHP
+    ");
+    return $stmt->fetchAll();
+}
     
     public function getById($maLHP) {
         $stmt = $this->db->prepare("SELECT * FROM LopHocPhan WHERE MaLHP = ?");
