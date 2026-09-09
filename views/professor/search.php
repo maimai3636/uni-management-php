@@ -6,7 +6,7 @@
 <form method="GET" action="<?= url('/professor/search') ?>" class="row g-3 mb-4">
     <div class="col-md-5">
         <label class="form-label">Môn học</label>
-        <select class="form-control" name="MaMH">
+        <select class="form-select" name="MaMH">
             <option value="">-- Tất cả môn học --</option>
             <?php foreach ($monHocList as $mh): ?>
             <option value="<?= htmlspecialchars($mh['MaMH']) ?>" <?= ($MaMH ?? '') === $mh['MaMH'] ? 'selected' : '' ?>>
@@ -23,6 +23,7 @@
         <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Tìm kiếm</button>
     </div>
 </form>
+
 <div class="table-responsive">
     <table class="table table-hover align-middle">
         <thead class="table-light">
@@ -38,3 +39,25 @@
                 <th>Điểm TK</th>
             </tr>
         </thead>
+        <tbody>
+            <?php foreach ($results as $res): ?>
+            <tr>
+                <td><strong><?= htmlspecialchars($res['MaSV']) ?></strong></td>
+                <td><?= htmlspecialchars($res['sinhVien']['HoTen'] ?? '') ?></td>
+                <td><span class="badge bg-secondary"><?= htmlspecialchars($res['sinhVien']['MaLop'] ?? '') ?></span></td>
+                <td><?= htmlspecialchars($res['MaLHP']) ?></td>
+                <td><?= htmlspecialchars($res['monHoc']['TenMH'] ?? '') ?></td>
+                <td><?= $res['DiemChuyenCan'] ?></td>
+                <td><?= $res['DiemGiuaKy'] ?></td>
+                <td><?= $res['DiemCuoiKy'] ?></td>
+                <td><strong class="text-primary"><?= $res['DiemTongKet'] ?></strong></td>
+            </tr>
+            <?php endforeach; ?>
+            <?php if (empty($results)): ?>
+            <tr>
+                <td colspan="9" class="text-center py-3 text-muted">Không tìm thấy kết quả phù hợp</td>
+            </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>

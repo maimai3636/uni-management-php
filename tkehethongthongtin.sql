@@ -94,8 +94,8 @@ VALUES
 
 INSERT INTO KetQua (MaSV, MaLHP, DiemChuyenCan, DiemGiuaKy, DiemCuoiKy, DiemTongKet)
 VALUES
-('SV001', 'LHP01', 9, 8, 7, 8),
-('SV001', 'LHP02', 8, 7, 6, 7),
-('SV002', 'LHP01', 7, 6, 5, 6),
-('SV003', 'LHP01', 10, 9, 8, 9),
-('SV003', 'LHP03', 8, 7, 6, 7);
+('SV001', 'LHP01', 9, 8, 7, 7.5),
+('SV001', 'LHP02', 8, 7, 6, 6.5),
+('SV002', 'LHP01', 7, 6, 5, 5.5),
+('SV003', 'LHP01', 10, 9, 8, 8.5),
+('SV003', 'LHP03', 8, 7, 6, 6.5);

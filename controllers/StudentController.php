@@ -107,11 +107,12 @@ class StudentController {
         ]);
     }
     
-    // === XEM BẢNG ĐIỂM ===
+    // === XEM BẢNG ĐIỂM (lọc theo học kỳ) ===
     public function getTranscript() {
         $maSV = $_SESSION['user']['maSV'];
         $sinhVien = $this->sinhVienModel->getById($maSV);
-        
+        $maHKFilter = $_GET['MaHK'] ?? null;
+
         $ketQuaList = $this->ketQuaModel->getByStudent($maSV);
         $transcriptData = [];
         
@@ -119,34 +120,51 @@ class StudentController {
             $lopHocPhan = $this->lopHocPhanModel->getById($kq['MaLHP']);
             $monHoc = $this->monHocModel->getById($lopHocPhan['MaMH']);
             $hocKy = $this->hocKyModel->getById($lopHocPhan['MaHK']);
+
+            // Lọc theo học kỳ nếu có
+            if ($maHKFilter && ($lopHocPhan['MaHK'] ?? '') !== $maHKFilter) continue;
+
+            $diemTK = $kq['DiemTongKet'];
             $transcriptData[] = [
-                'MaLHP' => $kq['MaLHP'],
-                'TenMH' => $monHoc['TenMH'] ?? 'N/A',
-                'SoTinChi' => $monHoc['SoTinChi'] ?? 0,
-                'DiemTongKet' => $kq['DiemTongKet'],
+                'MaLHP'         => $kq['MaLHP'],
+                'TenMH'         => $monHoc['TenMH'] ?? 'N/A',
+                'SoTinChi'      => $monHoc['SoTinChi'] ?? 0,
                 'DiemChuyenCan' => $kq['DiemChuyenCan'],
-                'DiemGiuaKy' => $kq['DiemGiuaKy'],
-                'DiemCuoiKy' => $kq['DiemCuoiKy'],
-                'hocKy' => $hocKy['TenHK'] ?? 'N/A',
-                'NamHoc' => $hocKy['NamHoc'] ?? 'N/A'
+                'DiemGiuaKy'    => $kq['DiemGiuaKy'],
+                'DiemCuoiKy'    => $kq['DiemCuoiKy'],
+                'DiemTongKet'   => $diemTK,
+                'DiemHe4'       => KetQua::toHe4($diemTK),
+                'XepLoai'       => KetQua::xepLoai($diemTK),
+                'MaHK'          => $lopHocPhan['MaHK'] ?? '',
+                'hocKy'         => $hocKy['TenHK'] ?? 'N/A',
+                'NamHoc'        => $hocKy['NamHoc'] ?? 'N/A'
             ];
         }
         
-        // Tính GPA
+        // Tính GPA hệ 10 và hệ 4
         $totalCredits = 0;
-        $totalScore = 0;
+        $totalScore10 = 0;
+        $totalScore4  = 0;
         foreach ($transcriptData as $item) {
-            $totalCredits += $item['SoTinChi'];
-            $totalScore += $item['DiemTongKet'] * $item['SoTinChi'];
+            $tc = $item['SoTinChi'];
+            $totalCredits += $tc;
+            $totalScore10 += $item['DiemTongKet'] * $tc;
+            $totalScore4  += $item['DiemHe4'] * $tc;
         }
-        $gpa = $totalCredits > 0 ? round($totalScore / $totalCredits, 2) : 0;
-        
+        $gpa10 = $totalCredits > 0 ? round($totalScore10 / $totalCredits, 2) : 0;
+        $gpa4  = $totalCredits > 0 ? round($totalScore4  / $totalCredits, 2) : 0;
+
+        $hocKyList = $this->hocKyModel->getAll();
+
         render('student/transcript', [
-            'user' => $_SESSION['user'],
-            'sinhVien' => $sinhVien,
+            'user'           => $_SESSION['user'],
+            'sinhVien'       => $sinhVien,
             'transcriptData' => $transcriptData,
-            'gpa' => $gpa,
-            'totalCredits' => $totalCredits
+            'gpa10'          => $gpa10,
+            'gpa4'           => $gpa4,
+            'totalCredits'   => $totalCredits,
+            'hocKyList'      => $hocKyList,
+            'filterMaHK'     => $maHKFilter ?? ''
         ]);
     }
 }

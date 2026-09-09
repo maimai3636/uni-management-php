@@ -37,11 +37,16 @@
                 <td><?= htmlspecialchars($gv['SDT'] ?? '') ?></td>
                 <td>
                     <a href="<?= url('/admin/giangvien/delete/' . $gv['MaGV']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Xóa giảng viên này?')">
- <i class="fas fa-trash"></i>
+                        <i class="fas fa-trash"></i>
                     </a>
                 </td>
             </tr>
             <?php endforeach; ?>
+            <?php if (empty($giangVienList)): ?>
+            <tr>
+                <td colspan="5" class="text-center py-3 text-muted">Chưa có dữ liệu giảng viên</td>
+            </tr>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>

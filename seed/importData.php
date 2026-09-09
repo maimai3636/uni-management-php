@@ -148,7 +148,7 @@ $ketQuaList = [
     ['MaSV' => 'SV003', 'MaLHP' => 'LHP03', 'DiemChuyenCan' => 8, 'DiemGiuaKy' => 7, 'DiemCuoiKy' => 6]
 ];
 foreach ($ketQuaList as $kq) {
-    $diemTK = round(($kq['DiemChuyenCan'] + $kq['DiemGiuaKy'] + $kq['DiemCuoiKy']) / 3, 2);
+    $diemTK = round(($kq['DiemChuyenCan'] * 0.1 + $kq['DiemGiuaKy'] * 0.3 + $kq['DiemCuoiKy'] * 0.6), 2);
     $stmt = $pdo->prepare("INSERT INTO KetQua (MaSV, MaLHP, DiemChuyenCan, DiemGiuaKy, DiemCuoiKy, DiemTongKet) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->execute([$kq['MaSV'], $kq['MaLHP'], $kq['DiemChuyenCan'], $kq['DiemGiuaKy'], $kq['DiemCuoiKy'], $diemTK]);
 }

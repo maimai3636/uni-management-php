@@ -45,6 +45,9 @@
                 <td colspan="4" class="text-center py-3 text-muted">Chưa có dữ liệu học kỳ</td>
             </tr>
             <?php endif; ?>
+        </tbody>
+    </table>
+</div>
 
 <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -69,7 +72,7 @@
                     <div class="mb-3">
                         <label class="form-label">Năm học</label>
                         <input type="text" name="NamHoc" class="form-control"
-                               placeholder="VD: 2026-2027" required>
+                               placeholder="VD: 2024-2025" required>
                     </div>
                 </div>
 
@@ -84,7 +87,4 @@
             </form>
         </div>
     </div>
-</div>
-        </tbody>
-    </table>
 </div>

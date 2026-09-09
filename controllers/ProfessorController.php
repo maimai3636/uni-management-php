@@ -47,28 +47,37 @@ class ProfessorController {
         ]);
     }
     
-    // === XEM DANH SÁCH LỚP ===
+    // === XEM DANH SÁCH LỚP (có lọc theo học kỳ) ===
     public function getClasses() {
         $maGV = $_SESSION['user']['maGV'];
-        $lopHocPhanList = $this->lopHocPhanModel->getByProfessor($maGV);
+        $maHK = $_GET['MaHK'] ?? null;
+
+        $lopHocPhanList = $this->lopHocPhanModel->getByProfessorAndSemester($maGV, $maHK ?: null);
+        $hocKyList = $this->hocKyModel->getAll();
+
         $populatedList = [];
         foreach ($lopHocPhanList as $lhp) {
             $monHoc = $this->monHocModel->getById($lhp['MaMH']);
-            $hocKy = $this->hocKyModel->getById($lhp['MaHK']);
+            $hocKy  = $this->hocKyModel->getById($lhp['MaHK']);
             $populatedList[] = array_merge($lhp, [
                 'monHoc' => $monHoc,
-                'hocKy' => $hocKy
+                'hocKy'  => $hocKy
             ]);
         }
         
         render('professor/classes', [
-            'user' => $_SESSION['user'],
-            'lopHocPhanList' => $populatedList
+            'user'           => $_SESSION['user'],
+            'lopHocPhanList' => $populatedList,
+            'hocKyList'      => $hocKyList,
+            'filterMaHK'     => $maHK ?? ''
         ]);
     }
     
-    // === XEM SINH VIÊN TRONG LỚP ===
+    // === XEM & NHẬP ĐIỂM SINH VIÊN TRONG LỚP (có lọc học kỳ) ===
     public function getClassStudents($maLHP) {
+        $maGV  = $_SESSION['user']['maGV'];
+        $maHKFilter = $_GET['MaHK'] ?? null;
+
         $lopHocPhan = $this->lopHocPhanModel->getById($maLHP);
         if (!$lopHocPhan) {
             $_SESSION['error'] = 'Không tìm thấy lớp học phần';
@@ -76,7 +85,7 @@ class ProfessorController {
             return;
         }
         
-        $ketQuaList = $this->ketQuaModel->getByClass($maLHP);
+        $ketQuaList = $this->ketQuaModel->getByClassAndSemester($maLHP, $maHKFilter ?: null, null);
         $populatedList = [];
         foreach ($ketQuaList as $kq) {
             $sinhVien = $this->sinhVienModel->getById($kq['MaSV']);
@@ -85,8 +94,12 @@ class ProfessorController {
             ]);
         }
         
-        $monHoc = $this->monHocModel->getById($lopHocPhan['MaMH']);
-        $hocKy = $this->hocKyModel->getById($lopHocPhan['MaHK']);
+        $monHoc   = $this->monHocModel->getById($lopHocPhan['MaMH']);
+        $hocKy    = $this->hocKyModel->getById($lopHocPhan['MaHK']);
+        $hocKyList = $this->hocKyModel->getAll();
+
+        // Danh sách tất cả LHP của GV để hiện bộ lọc
+        $lopHocPhanList = $this->lopHocPhanModel->getByProfessor($maGV);
         
         render('professor/students', [
             'user' => $_SESSION['user'],
@@ -95,29 +108,33 @@ class ProfessorController {
                 'monHoc' => $monHoc,
                 'hocKy' => $hocKy
             ]),
-            'MaLHP' => $maLHP,
-            'success' => $_SESSION['success'] ?? null,
-            'error' => $_SESSION['error'] ?? null
+            'MaLHP'         => $maLHP,
+            'hocKyList'     => $hocKyList,
+            'filterMaHK'    => $maHKFilter ?? '',
+            'lopHocPhanList'=> $lopHocPhanList,
+            'success'       => $_SESSION['success'] ?? null,
+            'error'         => $_SESSION['error'] ?? null
         ]);
         unset($_SESSION['success'], $_SESSION['error']);
     }
     
-    // === NHẬP/SỬA ĐIỂM ===
+    // === NHẬP/SỬA ĐIỂM — trả về JSON ===
     public function updateScore() {
+        header('Content-Type: application/json');
         $data = [
-            'MaSV' => $_POST['MaSV'],
-            'MaLHP' => $_POST['MaLHP'],
+            'MaSV'          => $_POST['MaSV'],
+            'MaLHP'         => $_POST['MaLHP'],
             'DiemChuyenCan' => (float)($_POST['DiemChuyenCan'] ?? 0),
-            'DiemGiuaKy' => (float)($_POST['DiemGiuaKy'] ?? 0),
-            'DiemCuoiKy' => (float)($_POST['DiemCuoiKy'] ?? 0)
+            'DiemGiuaKy'    => (float)($_POST['DiemGiuaKy']    ?? 0),
+            'DiemCuoiKy'    => (float)($_POST['DiemCuoiKy']    ?? 0)
         ];
         
         if ($this->ketQuaModel->createOrUpdate($data)) {
-            $_SESSION['success'] = 'Cập nhật điểm thành công';
+            echo json_encode(['success' => true, 'message' => 'Cập nhật điểm thành công']);
         } else {
-            $_SESSION['error'] = 'Cập nhật điểm thất bại';
+            echo json_encode(['success' => false, 'message' => 'Cập nhật điểm thất bại']);
         }
-        redirect('/professor/students/' . $data['MaLHP']);
+        exit;
     }
     
     // === TRA CỨU SINH VIÊN ===

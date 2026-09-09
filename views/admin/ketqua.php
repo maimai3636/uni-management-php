@@ -19,34 +19,85 @@
 </div>
 <?php endif; ?>
 
+<!-- Bộ lọc -->
+<form method="GET" action="<?= url('/admin/ketqua') ?>" class="row g-2 mb-3">
+    <div class="col-md-3">
+        <input type="text" class="form-control" name="MaSV" placeholder="Mã sinh viên..."
+               value="<?= htmlspecialchars($filterMaSV ?? '') ?>">
+    </div>
+    <div class="col-md-3">
+        <select class="form-select" name="MaLHP">
+            <option value="">-- Tất cả lớp HP --</option>
+            <?php foreach ($lopHocPhanList as $lhp): ?>
+            <option value="<?= htmlspecialchars($lhp['MaLHP']) ?>"
+                <?= ($filterMaLHP ?? '') === $lhp['MaLHP'] ? 'selected' : '' ?>>
+                <?= htmlspecialchars($lhp['MaLHP']) ?>
+            </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <select class="form-select" name="MaHK">
+            <option value="">-- Tất cả học kỳ --</option>
+            <?php foreach ($hocKyList as $hk): ?>
+            <option value="<?= htmlspecialchars($hk['MaHK']) ?>"
+                <?= ($filterMaHK ?? '') === $hk['MaHK'] ? 'selected' : '' ?>>
+                <?= htmlspecialchars($hk['TenHK']) ?> (<?= htmlspecialchars($hk['NamHoc']) ?>)
+            </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-md-2 d-flex gap-1">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Lọc</button>
+        <a href="<?= url('/admin/ketqua') ?>" class="btn btn-secondary w-100">Xóa</a>
+    </div>
+</form>
+
 <div class="table-responsive">
     <table class="table table-hover">
         <thead>
             <tr>
                 <th>Mã SV</th>
-                <th>Họ tên SV</th>
+                <th>Họ tên</th>
                 <th>Mã LHP</th>
                 <th>Môn học</th>
+                <th>Tín chỉ</th>
                 <th>Điểm CC</th>
                 <th>Điểm GK</th>
                 <th>Điểm CK</th>
-                <th>Điểm TK</th>
+                <th>Tổng kết</th>
+                <th>Hệ 4</th>
+                <th>Xếp loại</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($ketQuaList as $kq): ?>
+            <?php
+                $he4    = KetQua::toHe4($kq['DiemTongKet']);
+                $xepLoai = KetQua::xepLoai($kq['DiemTongKet']);
+                $badgeClass = match(true) {
+                    $kq['DiemTongKet'] >= 9  => 'success',
+                    $kq['DiemTongKet'] >= 7  => 'primary',
+                    $kq['DiemTongKet'] >= 5  => 'warning',
+                    default                  => 'danger',
+                };
+            ?>
             <tr>
-                <td><strong><?= $kq['MaSV'] ?></strong></td>
-                <td><?= $kq['TenSV'] ?></td>
-                <td><?= $kq['MaLHP'] ?></td>
-                <td><?= $kq['TenMH'] ?></td>
+                <td><strong><?= htmlspecialchars($kq['MaSV']) ?></strong></td>
+                <td><?= htmlspecialchars($kq['TenSV']) ?></td>
+                <td><?= htmlspecialchars($kq['MaLHP']) ?></td>
+                <td><?= htmlspecialchars($kq['TenMH']) ?></td>
+                <td class="text-center"><?= htmlspecialchars($kq['SoTinChi']) ?></td>
                 <td><?= $kq['DiemChuyenCan'] ?></td>
                 <td><?= $kq['DiemGiuaKy'] ?></td>
                 <td><?= $kq['DiemCuoiKy'] ?></td>
                 <td><strong class="text-primary"><?= $kq['DiemTongKet'] ?></strong></td>
+                <td><?= $he4 ?></td>
+                <td><span class="badge bg-<?= $badgeClass ?>"><?= $xepLoai ?></span></td>
                 <td>
-                    <a href="<?= url('/admin/ketqua/delete/' . $kq['MaSV'] . '/' . $kq['MaLHP']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Xóa kết quả này?')">
+                    <a href="<?= url('/admin/ketqua/delete/' . $kq['MaSV'] . '/' . $kq['MaLHP']) ?>"
+                       class="btn btn-danger btn-sm" onclick="return confirm('Xóa kết quả này?')">
                         <i class="fas fa-trash"></i>
                     </a>
                 </td>
@@ -54,7 +105,7 @@
             <?php endforeach; ?>
             <?php if (empty($ketQuaList)): ?>
             <tr>
-                <td colspan="9" class="text-center">Chưa có dữ liệu kết quả</td>
+                <td colspan="12" class="text-center">Chưa có dữ liệu kết quả</td>
             </tr>
             <?php endif; ?>
         </tbody>

@@ -24,7 +24,7 @@
                 <th>Mã LHP</th>
                 <th>Mã MH</th>
                 <th>Mã GV</th>
-                <th>GV phụ trách</th>
+                <th>Họ tên GV</th>
                 <th>Mã HK</th>
                 <th>Sĩ số</th>
                 <th>Thao tác</th>
@@ -36,7 +36,7 @@
                 <td><strong><?= htmlspecialchars($lhp['MaLHP']) ?></strong></td>
                 <td><?= htmlspecialchars($lhp['MaMH']) ?></td>
                 <td><?= htmlspecialchars($lhp['MaGV']) ?></td>
-                <td><?= htmlspecialchars($lhp['TenGV'] ?? 'Chưa xác định') ?></td>
+                <td><?= htmlspecialchars($lhp['TenGV'] ?? '') ?></td>
                 <td><span class="badge bg-secondary"><?= htmlspecialchars($lhp['MaHK']) ?></span></td>
                 <td><span class="badge bg-info text-dark"><?= htmlspecialchars($lhp['SiSo'] ?? 0) ?></span></td>
                 <td>
@@ -49,10 +49,10 @@
             <?php if (empty($lopHocPhanList)): ?>
             <tr>
                 <td colspan="7" class="text-center py-3 text-muted">Chưa có dữ liệu lớp học phần</td>
-                </tr>
-                <?php endif; ?>
-</tbody>
-</table>
+            </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
 </div>
 
 <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">

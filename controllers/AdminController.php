@@ -243,17 +243,30 @@ class AdminController {
     
     // === KẾT QUẢ (COMPOSITE KEY) ===
     public function ketQua() {
-        $ketQuaList = $this->ketQuaModel->getAll();
-        $sinhVienList = $this->sinhVienModel->getAll();
+        $maSV  = trim($_GET['MaSV']  ?? '');
+        $maLHP = trim($_GET['MaLHP'] ?? '');
+        $maHK  = trim($_GET['MaHK']  ?? '');
+
+        $ketQuaList     = $this->ketQuaModel->getFiltered(
+            $maSV  ?: null,
+            $maLHP ?: null,
+            $maHK  ?: null
+        );
+        $sinhVienList   = $this->sinhVienModel->getAll();
         $lopHocPhanList = $this->lopHocPhanModel->getAll();
-        
+        $hocKyList      = $this->hocKyModel->getAll();
+
         render('admin/ketqua', [
-            'user' => $_SESSION['user'],
-            'ketQuaList' => $ketQuaList,
-            'sinhVienList' => $sinhVienList,
+            'user'           => $_SESSION['user'],
+            'ketQuaList'     => $ketQuaList,
+            'sinhVienList'   => $sinhVienList,
             'lopHocPhanList' => $lopHocPhanList,
-            'success' => $_SESSION['success'] ?? null,
-            'error' => $_SESSION['error'] ?? null
+            'hocKyList'      => $hocKyList,
+            'filterMaSV'     => $maSV,
+            'filterMaLHP'    => $maLHP,
+            'filterMaHK'     => $maHK,
+            'success'        => $_SESSION['success'] ?? null,
+            'error'          => $_SESSION['error'] ?? null
         ]);
         unset($_SESSION['success'], $_SESSION['error']);
     }

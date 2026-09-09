@@ -32,7 +32,20 @@
                 </div>
                 <hr>
                 <div class="row mb-3">
+                    <div class="col-sm-4 text-muted"><i class="fas fa-users"></i> Lớp sinh hoạt:</div>
+                    <div class="col-sm-8"><span class="badge bg-secondary"><?= htmlspecialchars($sinhVien['MaLop'] ?? 'Chưa cập nhật') ?></span></div>
+                </div>
+                <hr>
+                <div class="row mb-3">
                     <div class="col-sm-4 text-muted"><i class="fas fa-phone"></i> Số điện thoại:</div>
                     <div class="col-sm-8"><?= htmlspecialchars($sinhVien['SDT'] ?? 'Chưa cập nhật') ?></div>
                 </div>
                 <hr>
+                <div class="row mb-3">
+                    <div class="col-sm-4 text-muted"><i class="fas fa-map-marker-alt"></i> Địa chỉ:</div>
+                    <div class="col-sm-8"><?= htmlspecialchars($sinhVien['DiaChi'] ?? 'Chưa cập nhật') ?></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
