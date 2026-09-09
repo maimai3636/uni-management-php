@@ -47,3 +47,5 @@
             <?php if (empty($lopHocPhanList)): ?>
             <tr>
                 <td colspan="6" class="text-center py-3 text-muted">Chưa có dữ liệu lớp học phần</td>
+                </tr>
+                <?php endif; ?>
