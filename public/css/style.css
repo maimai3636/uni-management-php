@@ -63,3 +63,6 @@ body {
 .alert {
     border-radius: 12px;
 }
+.bg-pink {
+    background-color: #e83e8c !important;
+}
