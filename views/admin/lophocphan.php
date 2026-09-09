@@ -49,7 +49,10 @@
                 <td colspan="6" class="text-center py-3 text-muted">Chưa có dữ liệu lớp học phần</td>
                 </tr>
                 <?php endif; ?>
-<!-- Modal thêm lớp học phần -->
+</tbody>
+</table>
+</div>
+
 <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
