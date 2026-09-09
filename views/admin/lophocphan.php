@@ -49,3 +49,77 @@
                 <td colspan="6" class="text-center py-3 text-muted">Chưa có dữ liệu lớp học phần</td>
                 </tr>
                 <?php endif; ?>
+<!-- Modal thêm lớp học phần -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="<?= url('/admin/lophocphan/add') ?>">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm lớp học phần</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Mã lớp học phần</label>
+                        <input type="text" name="MaLHP" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Môn học</label>
+                        <select name="MaMH" class="form-select" required>
+                            <option value="">-- Chọn môn học --</option>
+                            <?php foreach ($monHocList as $mh): ?>
+                                <option value="<?= htmlspecialchars($mh['MaMH']) ?>">
+                                    <?= htmlspecialchars($mh['MaMH']) ?> -
+                                    <?= htmlspecialchars($mh['TenMH']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Giảng viên</label>
+                        <select name="MaGV" class="form-select" required>
+                            <option value="">-- Chọn giảng viên --</option>
+                            <?php foreach ($giangVienList as $gv): ?>
+                                <option value="<?= htmlspecialchars($gv['MaGV']) ?>">
+                                    <?= htmlspecialchars($gv['MaGV']) ?> -
+                                    <?= htmlspecialchars($gv['HoTen']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Học kỳ</label>
+                        <select name="MaHK" class="form-select" required>
+                            <option value="">-- Chọn học kỳ --</option>
+                            <?php foreach ($hocKyList as $hk): ?>
+                                <option value="<?= htmlspecialchars($hk['MaHK']) ?>">
+                                    <?= htmlspecialchars($hk['MaHK']) ?> -
+                                    <?= htmlspecialchars($hk['TenHK']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Sĩ số</label>
+                        <input type="number" name="SiSo" class="form-control"
+                               min="0" value="0">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Hủy
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Thêm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
