@@ -47,3 +47,63 @@
         </tbody>
     </table>
 </div>
+<!-- Modal thêm giảng viên -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="<?= url('/admin/giangvien/add') ?>">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm giảng viên</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Mã giảng viên</label>
+                        <input type="text" name="MaGV" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Họ và tên</label>
+                        <input type="text" name="HoTen" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Ngày sinh</label>
+                        <input type="date" name="NgaySinh" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="text" name="SDT" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Học kỳ</label>
+                        <select name="MaHK" class="form-select">
+                            <?php foreach ($hocKyList as $hk): ?>
+                                <option value="<?= htmlspecialchars($hk['MaHK']) ?>">
+                                    <?= htmlspecialchars($hk['MaHK']) ?> - <?= htmlspecialchars($hk['TenHK']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu</label>
+                        <input type="password" name="password" class="form-control" value="123456">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Hủy
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Thêm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
