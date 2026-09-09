@@ -45,8 +45,10 @@
                 <td colspan="4" class="text-center py-3 text-muted">Chưa có dữ liệu môn học</td>
             </tr>
             <?php endif; ?>
+</tbody>
+</table>
+</div>
 
-<!-- Modal thêm môn học -->
 <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
