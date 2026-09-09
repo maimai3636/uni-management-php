@@ -45,7 +45,7 @@
                 <td colspan="4" class="text-center py-3 text-muted">Chưa có dữ liệu học kỳ</td>
             </tr>
             <?php endif; ?>
-<!-- Modal thêm học kỳ -->
+
 <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
